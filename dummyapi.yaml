@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummyapidev-deployment
+  labels:
+    app: dummyapidev-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dummyapidev
+  template:
+    metadata:
+      labels:
+        app: dummyapidev
+    spec:
+      containers:
+      - name: nginx
+        image: ctaimacrdev.azurecr.io/dummyapidev:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dummyapidev
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: dummyapidev       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dummyapidev
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: dummyapidev   
