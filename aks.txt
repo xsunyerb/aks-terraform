@@ -1,0 +1,55 @@
+PS D:\gitrepos\aks-test> az account show
+{
+  "environmentName": "AzureCloud",
+  "homeTenantId": "1505050c-bc5f-4f86-a246-6411f29cfc90",
+  "id": "e25d2b80-1114-4ee3-9c4c-88e6ef6fe6a8",
+  "isDefault": true,
+  "managedByTenants": [],
+  "name": "Visual Studio Enterprise – MPN (xsunyer)",
+  "state": "Enabled",
+  "tenantId": "1505050c-bc5f-4f86-a246-6411f29cfc90",
+  "user": {
+    "name": "xsunyer@ctaima.com",
+    "type": "user"
+  }
+}
+
+-- service-principal
+az ad sp create-for-rbac --skip-assignment --name myAKSClusterServicePrincipal
+{
+  "appId": "e14dfeac-1e26-4673-97f3-e20504418cc2",
+  "displayName": "myAKSClusterServicePrincipal",
+  "name": "http://myAKSClusterServicePrincipal",
+  "password": "cE~CRXS6eXlaq41f6DhK-E3GOsTTQ.759n",
+  "tenant": "1505050c-bc5f-4f86-a246-6411f29cfc90"
+}
+
+-- display environment variables powershell
+
+gci env:* | sort-object name
+
+-- create ssh public key
+
+ssh-keygen -m PEM -t rsa -b 4096
+
+--------------------------------------------------------------------------- create aks
+
+az storage container create -n tfstate --account-name aksst --account-key vKAtjFI75BuzjBn799pTmt64f5JkQsSQv3ZegUa0qE4CYDHNM+xppRStlbw/VYhbNpIk7+eyeXF1jWey1zwjCw==
+
+terraform init -backend-config="storage_account_name=aksst" -backend-config="container_name=tfstate" -backend-config="access_key=vKAtjFI75BuzjBn799pTmt64f5JkQsSQv3ZegUa0qE4CYDHNM+xppRStlbw/VYhbNpIk7+eyeXF1jWey1zwjCw==" -backend-config="key=codelab.microsoft.tfstate"
+
+[Environment]::SetEnvironmentVariable("TF_VAR_client_id","e14dfeac-1e26-4673-97f3-e20504418cc2")
+[Environment]::SetEnvironmentVariable("TF_VAR_client_secret","cE~CRXS6eXlaq41f6DhK-E3GOsTTQ.759n")
+
+terraform plan -out out.plan
+
+terraform apply out.plan
+
+------------------ deploy api
+
+az aks get-credentials -g k8stest -n k8stest
+
+kubectl apply -f dummyapi.yaml
+
+kubectl get pods
+kubectl get service
