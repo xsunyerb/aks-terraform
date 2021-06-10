@@ -1,0 +1,51 @@
+--get info
+kubectl get all
+kubectl get pods
+kubectl get services
+
+-- expose port externally
+kubectl port-forward [pod-name] 8080:80
+
+-- run pod
+kubectl run [pod-name] --image=nginx:alpine
+
+-- create pod using yaml
+kubectl create -f file.pod.yml
+
+-- create and update pod
+kubectl apply -f file.pod.yml
+
+-- delete pod
+kubectl delete pod [name-of-pod]
+kubectl delete -f file.pod.yml
+
+-- pod health: livenessProbe & readinessProbe (defined in yaml)
+
+-- create deployment
+kubectl create/apply -f file.deployment.yml
+
+-- list all deployments and their labels
+kubectl get deployment --show-labels
+
+--get all deployments with a specific labels
+kubectl get deployment -l app=nginx
+
+-- delete a deployment 
+kubectl delete deploymnet [deployment-name]
+
+--scale the deployment pods to 5
+kubectl scale deployment [deploymnet-name] --replicas=5
+kubectl scale -f file.deployment.yml --replicas=5
+
+
+
+
+
+
+
+
+
+
+
+
+
