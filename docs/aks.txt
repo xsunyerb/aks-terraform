@@ -47,9 +47,8 @@ terraform apply out.plan
 
 ------------------ deploy api
 
-az aks get-credentials -g k8stest -n k8stest
-
-kubectl apply -f dummyapi.yaml
+az aks get-credentials -g akstest -n clustertest
+kubectl apply -f ../api/dummyapi.yaml
 
 kubectl get pods
 kubectl get service

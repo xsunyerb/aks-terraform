@@ -1,3 +1,11 @@
+variable resource_group_name {
+    default = "akstest"
+}
+
+variable location {
+    default = "West Europe"
+}
+
 variable "client_id" {}
 variable "client_secret" {}
 
@@ -10,23 +18,15 @@ variable "ssh_public_key" {
 }
 
 variable "dns_prefix" {
-    default = "k8stest"
+    default = "akstest"
 }
 
 variable cluster_name {
-    default = "k8stest"
-}
-
-variable resource_group_name {
-    default = "k8stest"
-}
-
-variable location {
-    default = "West Europe"
+    default = "clustertest"
 }
 
 variable log_analytics_workspace_name {
-    default = "testLogAnalyticsWorkspaceName"
+    default = "clustertestAnalytics"
 }
 
 # refer https://azure.microsoft.com/global-infrastructure/services/?products=monitor for log analytics available regions
